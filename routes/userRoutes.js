@@ -1,58 +1,93 @@
-const express = require("express");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const express = require('express');
+const axios = require('axios'); // Import axios for making HTTP requests
 
-const router = express.Router();
+const app = express();
 
-// Get user's anime preferences
-router.get("/:userId/preferences", async (req, res) => {
-  const { userId } = req.params;
+// Home page route
+// app.get("/", async (req, res) => {
+//   const page = parseInt(req.query.page) || 1;
+//   const limit = parseInt(req.query.limit) || 10;
 
-  try {
-    // Fetch user from the database
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId),
-      },
-      include: {
-        preferences: true, 
-      },
-    });
+//   try {
+//     const offset = (page - 1) * limit;
+//     const users = await prisma.user.findMany({
+//       skip: offset,
+//       take: limit,
+//     });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+//     const totalCount = await prisma.user.count();
+//     const totalPages = Math.ceil(totalCount / limit);
 
-    res.status(200).json(user.preferences);
-  } catch (error) {
-    console.error("Error fetching user preferences:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+//     res.json({
+//       users,
+//       totalCount,
+//       totalPages,
+//       currentPage: page,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching users:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
 
-// Update user's anime preferences
-router.put("/:userId/preferences", async (req, res) => {
-  const { userId } = req.params;
-  const { preferences } = req.body;
 
-  try {
-    // Update user's preferences in the database
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: parseInt(userId),
-      },
-      data: {
-        preferences: preferences, // Assuming you have a "preferences" field in your User model
-      },
-    });
 
-    res.status(200).json(updatedUser.preferences);
-  } catch (error) {
-    console.error("Error updating user preferences:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+// // Route to get anime details by ID
+// app.get('/anime/:id', async (req, res) => {
+//     const animeId = req.params.id;
+//     try {
+//         const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}`);
+//         const animeDetails = response.data;
+//         res.json(animeDetails);
+//     } catch (error) {
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
-// Other user routes...
+// // Route to search for anime by query
+// app.get('/search', async (req, res) => {
+//     const query = req.query.q;
+//     try {
+//         const response = await axios.get(`https://api.jikan.moe/v4/anime?q=${query}`);
+//         const searchResults = response.data;
+//         res.json(searchResults);
+//     } catch (error) {
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
 
-module.exports = router;
+// // Route to get anime genres
+// app.get('/genres', async (req, res) => {
+//     try {
+//         const response = await axios.get('https://api.jikan.moe/v4/genre/anime');
+//         const genres = response.data;
+//         res.json(genres);
+//     } catch (error) {
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
+
+// // Route to get anime recommendations
+// app.get('/recommendations/:id', async (req, res) => {
+//     const animeId = req.params.id;
+//     try {
+//         const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/recommendations`);
+//         const recommendations = response.data;
+//         res.json(recommendations);
+//     } catch (error) {
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
+
+// // Route to get reviews for an anime by ID
+// app.get('/reviews/:id', async (req, res) => {
+//     const animeId = req.params.id;
+//     try {
+//         const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/reviews`);
+//         const reviews = response.data;
+//         res.json(reviews);
+//     } catch (error) {
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
+
