@@ -10,5 +10,14 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("postgresql://newuser@localhost:5432/Anime?schema=public")
+  url      = "postgresql://newuser@localhost:5432/Anime?schema=public"
+}
+
+// Define your Anime model
+model Anime {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  episodes    Int?
+  releaseDate DateTime?
 }
