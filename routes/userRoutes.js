@@ -15,7 +15,7 @@ router.get("/:userId/preferences", async (req, res) => {
         id: parseInt(userId),
       },
       include: {
-        preferences: true, // Assuming you have a "preferences" relation in your User model
+        preferences: true, 
       },
     });
 
