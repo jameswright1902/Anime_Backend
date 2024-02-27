@@ -3,6 +3,12 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const router = express.Router();
+const app = express();
+const PORT = 3000;
+
+app.listen(PORT, () => {
+  console.log(`We are listening on port number ${PORT}`);
+});
 
 router.get("/", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
