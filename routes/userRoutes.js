@@ -1,7 +1,6 @@
 const express = require("express");
 const userRouter = express.Router();
 const axios = require("axios");
-
 // Route to get anime details by ID
 userRouter.get("/anime/:id", async (req, res) => {
   const animeId = req.params.id;
@@ -12,7 +11,6 @@ userRouter.get("/anime/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 // Route to search anime by query
 userRouter.get('/anime/:id/episodes', async (req, res) => {
   const animeId = req.params.id;
@@ -23,8 +21,6 @@ userRouter.get('/anime/:id/episodes', async (req, res) => {
       res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
 userRouter.get('/anime/:id/reviews', async (req, res) => {
   const animeId = req.params.id; // Retrieve the anime ID from the route parameters
   try {
@@ -34,8 +30,6 @@ userRouter.get('/anime/:id/reviews', async (req, res) => {
       res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
 // Route to get anime characters
 userRouter.get('/anime/:id/characters', async (req, res) => {
     const animeId = req.params.id;
@@ -46,7 +40,6 @@ userRouter.get('/anime/:id/characters', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
-
 // Route to get videos for an anime by ID
 userRouter.get('/anime/:id/videos', async (req, res) => {
     const animeId = req.params.id;
@@ -57,6 +50,4 @@ userRouter.get('/anime/:id/videos', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
-
 module.exports = userRouter;
-
