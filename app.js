@@ -6,14 +6,21 @@ const router = express.Router();
 const app = express();
 const PORT = 3000;
 
+
+if (require.main === module) {
 app.listen(PORT, () => {
   console.log(`We are listening on port number ${PORT}`);
 });
+}
 
 app.get("/", (req, res) => {
   res.send("My first get");
 });
 app.use('/api', require('./api'));
+
+
+
+module.exports = router;
 
 // router.get("/", async (req, res) => {
 //   const page = parseInt(req.query.page) || 1;
@@ -40,5 +47,3 @@ app.use('/api', require('./api'));
 //     res.status(500).json({ message: "Internal server error" });
 //   }
 // });
-
-module.exports = router;
