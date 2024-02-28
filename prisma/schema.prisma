@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://newuser@localhost:5432/Anime?schema=public"
+  url      = "postgresql://jwright1902@localhost:5432/Anime?schema=public"
 }
 
 // Define your Anime model
@@ -31,6 +31,6 @@ model Users {
   lastname    String?
   email       String?
   admin       Boolean   @default(false)
-  tokens      Token[]
+  tokens      String?
   
 }
