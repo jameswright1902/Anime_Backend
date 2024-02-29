@@ -50,4 +50,16 @@ userRouter.get('/anime/:id/videos', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+// // Route to user account-need to finish this
+// userRouter.get('/anime/:id/videos', async (req, res) => {
+//   const animeId = req.params.id;
+//   try {
+//       const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/videos`);
+//       res.json(response.data);
+//   } catch (error) {
+//       res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+
 module.exports = userRouter;
