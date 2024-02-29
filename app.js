@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const router = express.Router();
 const app = express();
 const PORT = 3000;
-
+app.use(express.json());
 
 if (require.main === module) {
 app.listen(PORT, () => {
@@ -13,10 +13,10 @@ app.listen(PORT, () => {
 });
 }
 
-app.get("/", (req, res) => {
-  res.send("My first get");
-});
-app.use('/api', require('./api'));
+// app.get("/", (req, res) => {
+//   res.send("My first get");
+// });
+app.use('/', require('./api'));
 
 
 
