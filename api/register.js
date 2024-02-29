@@ -16,7 +16,7 @@ const prisma = new PrismaClient();
 //   res.send("My first get");
 // });
 
-router.post('/newuser', async (req, res) => {
+router.post('/', async (req, res) => {
  
   try {
     // Destructure user details from request body
