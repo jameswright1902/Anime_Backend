@@ -1,58 +1,65 @@
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
-
-const router = express.Router();
-
-// Get user's anime preferences
-router.get("/:userId/preferences", async (req, res) => {
-  const { userId } = req.params;
-
+const userRouter = express.Router();
+const axios = require("axios");
+// Route to get anime details by ID
+userRouter.get("/anime/:id", async (req, res) => {
+  const animeId = req.params.id;
   try {
-    // Fetch user from the database
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId),
-      },
-      include: {
-        preferences: true, 
-      },
-    });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}`);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+// Route to search anime by query
+userRouter.get('/anime/:id/episodes', async (req, res) => {
+  const animeId = req.params.id;
+  try {
+      const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/episodes`);
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+userRouter.get('/anime/:id/reviews', async (req, res) => {
+  const animeId = req.params.id; // Retrieve the anime ID from the route parameters
+  try {
+      const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/reviews`);
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+// Route to get anime characters
+userRouter.get('/anime/:id/characters', async (req, res) => {
+    const animeId = req.params.id;
+    try {
+        const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/characters`);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
     }
-
-    res.status(200).json(user.preferences);
-  } catch (error) {
-    console.error("Error fetching user preferences:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
+});
+// Route to get videos for an anime by ID
+userRouter.get('/anime/:id/videos', async (req, res) => {
+    const animeId = req.params.id;
+    try {
+        const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/videos`);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
-// Update user's anime preferences
-router.put("/:userId/preferences", async (req, res) => {
-  const { userId } = req.params;
-  const { preferences } = req.body;
+// // Route to user account-need to finish this
+// userRouter.get('/anime/:id/videos', async (req, res) => {
+//   const animeId = req.params.id;
+//   try {
+//       const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/videos`);
+//       res.json(response.data);
+//   } catch (error) {
+//       res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 
-  try {
-    // Update user's preferences in the database
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: parseInt(userId),
-      },
-      data: {
-        preferences: preferences, // Assuming you have a "preferences" field in your User model
-      },
-    });
-
-    res.status(200).json(updatedUser.preferences);
-  } catch (error) {
-    console.error("Error updating user preferences:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-// Other user routes...
-
-module.exports = router;
+module.exports = userRouter;
