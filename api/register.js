@@ -74,7 +74,13 @@ module.exports = router;
 // "lastname": "bones",
 // "email": "jw123@gmail.com"
 
-
+// {
+//   "username": "jax1902",
+// "password": "123456j",
+// "firstname": "john",
+// "lastname": "bones",
+// "email": "jb123@gmail.com"
+// }
 
 
 
