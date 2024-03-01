@@ -1,57 +1,112 @@
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const userRouter = express.Router();
+const axios = require("axios");
 
-const router = express.Router();
+const {
+  fetchAnimeRecommendations,
+  fetchTopAnimeCharacters,
+  fetchTopAnime
+} = require("../app/recommendation");
 
-// Get user's anime preferences
-router.get("/:userId/preferences", async (req, res) => {
-  const { userId } = req.params;
-
+// Route to get anime details by ID
+userRouter.get("/anime/:id", async (req, res) => {
+  const animeId = req.params.id;
   try {
-    // Fetch user from the database
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId),
-      },
-      include: {
-        preferences: true, 
-      },
-    });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json(user.preferences);
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}`
+    );
+    res.json(response.data);
   } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-// Update user's anime preferences
-router.put("/:userId/preferences", async (req, res) => {
-  const { userId } = req.params;
-  const { preferences } = req.body;
+// Route to search anime by query
+userRouter.get("/anime/:id/episodes", async (req, res) => {
+  const animeId = req.params.id;
+  try {
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}/episodes`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+userRouter.get("/anime/:id/reviews", async (req, res) => {
+  const animeId = req.params.id;
+  try {
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}/reviews`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Route to get anime characters
+userRouter.get("/anime/:id/characters", async (req, res) => {
+  const animeId = req.params.id;
+  try {
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}/characters`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Route to get videos for an anime by ID
+userRouter.get("/anime/:id/videos", async (req, res) => {
+  const animeId = req.params.id;
+  try {
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}/videos`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+// Route to fetch Anime Recommendations
+userRouter.get("/recommendations/anime", async (req, res) => {
+  const page = req.query.page || 1; // Default page is 1
 
   try {
-    // Update user's preferences in the database
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: parseInt(userId),
-      },
-      data: {
-        preferences: preferences, // Assuming you have a "preferences" field in your User model
-      },
-    });
-
-    res.status(200).json(updatedUser.preferences);
+    const animeRecommendations = await fetchAnimeRecommendations(page);
+    res.json(animeRecommendations);
   } catch (error) {
-    console.error("Error updating user preferences:", error);
+    res.status(500).send(error);
+  }
+});
+// Route to fetch Top Anime Characters
+userRouter.get("/top/characters", async (req, res) => {
+  const page = req.query.page || 1; // Default page is 1
+
+  try {
+    const topAnimeCharacters = await fetchTopAnimeCharacters(page);
+    res.json(topAnimeCharacters);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+// Route to fetch top anime
+userRouter.get("/top/anime", async (req, res) => {
+  const page = req.query.page || 1; // Default page is 1
+
+  try {
+    const response = await fetchTopAnime(page);
+    res.json(response);
+  } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
-// Other user routes...
 
-module.exports = router;
+
+module.exports = userRouter;
