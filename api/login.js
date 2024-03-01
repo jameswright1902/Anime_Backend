@@ -1,10 +1,13 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 // const axios = require('axios');
 const { PrismaClient } = require("@prisma/client");
+
 // Create an instance of Express router
 const router = express.Router();
+
 // Initialize Prisma client
 const prisma = new PrismaClient();
 // Route for user login
@@ -40,7 +43,7 @@ router.post('/login', async (req, res) => {
 module.exports = router;
 
 
-Message James Wright, Nicholas Mack
+
 
 
 
