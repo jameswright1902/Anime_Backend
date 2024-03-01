@@ -7,41 +7,48 @@ const { PrismaClient } = require("@prisma/client");
 const router = express.Router();
 // Initialize Prisma client
 const prisma = new PrismaClient();
-// Route for user login
-router.post('/login', async (req, res) => {
+// Route for user registration
+// router.get("/", (req, res) => {
+//   res.send("My first get");
+// });
+router.post('/', async (req, res) => {
   try {
-    // Destructure username and password from request body
-    const { username, password } = req.body;
-    // Find the user in the database by username
-    const user = await prisma.users.findUnique({
+    // Destructure user details from request body
+    const { username, password, firstname, lastname, email } = req.body;
+    // Check if username or email already exists in the database
+    const existingUser = await prisma.users.findFirst({
       where: {
-        username: username,
-      },
+        OR: [
+          { username: username },
+          { email: email }
+        ]
+      }
     });
-    // If user does not exist, send an error response
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+    // If user already exists, send an error response
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username or email already exists' });
     }
-    // Check if the password matches
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    // If passwords don't match, send an error response
-    if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid password' });
-    }
-    // Create JWT token
-    const token = jwt.sign({ userId: user.id }, 'your-secret-key', { expiresIn: '1h' });
-    // Send token in response
-    res.json({ token });
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // Create a new user in the database
+    const newUser = await prisma.users.create({
+      data: {
+        username: username,
+        password: hashedPassword,
+        firstname: firstname,
+        lastname: lastname,
+        email: email
+      }
+    });
+    // Generate JWT token for authentication
+    const token = jwt.sign({ userId: newUser.id }, 'your_secret_key');
+    // Send success response with token
+    res.status(201).json({ token });
   } catch (error) {
-    console.error('Error logging in:', error);
+    // If any error occurs, send an error response
+    console.error('Error registering user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+// Export the router
 module.exports = router;
-
-
-Message James Wright, Nicholas Mack
-
-
-
-
