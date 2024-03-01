@@ -5,7 +5,7 @@ const axios = require("axios");
 const {
   fetchAnimeRecommendations,
   fetchTopAnimeCharacters,
-  fetchTopAnime
+  fetchTopAnime,
 } = require("../app/recommendation");
 
 // Route to get anime details by ID
@@ -20,7 +20,6 @@ userRouter.get("/anime/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 // Route to search anime by query
 userRouter.get("/anime/:id/episodes", async (req, res) => {
   const animeId = req.params.id;
@@ -45,7 +44,6 @@ userRouter.get("/anime/:id/reviews", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 // Route to get anime characters
 userRouter.get("/anime/:id/characters", async (req, res) => {
   const animeId = req.params.id;
@@ -58,7 +56,6 @@ userRouter.get("/anime/:id/characters", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 // Route to get videos for an anime by ID
 userRouter.get("/anime/:id/videos", async (req, res) => {
   const animeId = req.params.id;
@@ -94,7 +91,6 @@ userRouter.get("/top/characters", async (req, res) => {
   }
 });
 
-
 // Route to fetch top anime
 userRouter.get("/top/anime", async (req, res) => {
   const page = req.query.page || 1; // Default page is 1
@@ -106,7 +102,5 @@ userRouter.get("/top/anime", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-
 
 module.exports = userRouter;
