@@ -1,10 +1,17 @@
 const express = require("express");
+<<<<<<< HEAD
+const userRouter = require("./routes/userRoutes");
+const app = express();
+const PORT = 3000;
+
+=======
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const router = express.Router();
 const app = express();
 const PORT = 3000;
+>>>>>>> a133e587548841db87657e2d9b1cc44211e8dabf
 app.use(express.json());
 
 if (require.main === module) {
@@ -12,6 +19,16 @@ app.listen(PORT, () => {
   console.log(`We are listening on port number ${PORT}`);
 });
 }
+<<<<<<< HEAD
+
+
+app.use('/', userRouter);
+
+
+
+// module.exports = router;
+
+=======
 
 // app.get("/", (req, res) => {
 //   res.send("My first get");
@@ -47,3 +64,4 @@ module.exports = router;
 //     res.status(500).json({ message: "Internal server error" });
 //   }
 // });
+>>>>>>> a133e587548841db87657e2d9b1cc44211e8dabf

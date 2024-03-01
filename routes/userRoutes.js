@@ -1,65 +1,106 @@
 const express = require("express");
 const userRouter = express.Router();
 const axios = require("axios");
+
+const {
+  fetchAnimeRecommendations,
+  fetchTopAnimeCharacters,
+  fetchTopAnime,
+} = require("../app/recommendation");
+
 // Route to get anime details by ID
 userRouter.get("/anime/:id", async (req, res) => {
   const animeId = req.params.id;
   try {
-    const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}`);
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}`
+    );
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 // Route to search anime by query
-userRouter.get('/anime/:id/episodes', async (req, res) => {
+userRouter.get("/anime/:id/episodes", async (req, res) => {
   const animeId = req.params.id;
   try {
-      const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/episodes`);
-      res.json(response.data);
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}/episodes`
+    );
+    res.json(response.data);
   } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
-userRouter.get('/anime/:id/reviews', async (req, res) => {
-  const animeId = req.params.id; // Retrieve the anime ID from the route parameters
+
+userRouter.get("/anime/:id/reviews", async (req, res) => {
+  const animeId = req.params.id;
   try {
-      const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/reviews`);
-      res.json(response.data);
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}/reviews`
+    );
+    res.json(response.data);
   } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 // Route to get anime characters
-userRouter.get('/anime/:id/characters', async (req, res) => {
-    const animeId = req.params.id;
-    try {
-        const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/characters`);
-        res.json(response.data);
-    } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+userRouter.get("/anime/:id/characters", async (req, res) => {
+  const animeId = req.params.id;
+  try {
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}/characters`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 // Route to get videos for an anime by ID
-userRouter.get('/anime/:id/videos', async (req, res) => {
-    const animeId = req.params.id;
-    try {
-        const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/videos`);
-        res.json(response.data);
-    } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
-    }
+userRouter.get("/anime/:id/videos", async (req, res) => {
+  const animeId = req.params.id;
+  try {
+    const response = await axios.get(
+      `https://api.jikan.moe/v4/anime/${animeId}/videos`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+// Route to fetch Anime Recommendations
+userRouter.get("/recommendations/anime", async (req, res) => {
+  const page = req.query.page || 1; // Default page is 1
+
+  try {
+    const animeRecommendations = await fetchAnimeRecommendations(page);
+    res.json(animeRecommendations);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+// Route to fetch Top Anime Characters
+userRouter.get("/top/characters", async (req, res) => {
+  const page = req.query.page || 1; // Default page is 1
+
+  try {
+    const topAnimeCharacters = await fetchTopAnimeCharacters(page);
+    res.json(topAnimeCharacters);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
-// // Route to user account-need to finish this
-// userRouter.get('/anime/:id/videos', async (req, res) => {
-//   const animeId = req.params.id;
-//   try {
-//       const response = await axios.get(`https://api.jikan.moe/v4/anime/${animeId}/videos`);
-//       res.json(response.data);
-//   } catch (error) {
-//       res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
+// Route to fetch top anime
+userRouter.get("/top/anime", async (req, res) => {
+  const page = req.query.page || 1; // Default page is 1
+
+  try {
+    const response = await fetchTopAnime(page);
+    res.json(response);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 module.exports = userRouter;
