@@ -34,3 +34,13 @@ model Users {
   tokens      String?
   
 }
+model Genre {
+  id    Int     @id @default(autoincrement())
+ name String  @unique
+
+}
+model Rating {
+  id    Int     @id @default(autoincrement())
+ name String  @unique
+
+}
