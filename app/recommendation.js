@@ -1,17 +1,18 @@
 const axios = require("axios");
 
 // Function to fetch anime recommendations
-async function fetchAnimeRecommendations(page) {
+async function fetchAnimeSchedules(page) {
   try {
     const response = await axios.get(
-      `https://api.jikan.moe/v4/recommendations/anime?page=${page}`
+      `https://api.jikan.moe/v4/schedules?page=${page}`
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching anime recommendations:", error.message);
+    console.error("Error fetching anime schedules:", error.message);
     throw error;
   }
 }
+
 
 async function fetchTopAnimeCharacters(page) {
   try {
@@ -38,7 +39,7 @@ async function fetchTopAnime(page) {
 }
 
 module.exports = {
-  fetchAnimeRecommendations,
+  fetchAnimeSchedules,
   fetchTopAnimeCharacters,
   fetchTopAnime,
 };
