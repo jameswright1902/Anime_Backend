@@ -13,7 +13,6 @@ async function fetchAnimeSchedules(page) {
   }
 }
 
-
 async function fetchTopAnimeCharacters(page) {
   try {
     const response = await axios.get(
