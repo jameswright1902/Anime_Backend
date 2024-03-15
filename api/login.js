@@ -11,7 +11,7 @@ const router = express.Router();
 // Initialize Prisma client
 const prisma = new PrismaClient();
 // Route for user login
-router.post("/login", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     // Destructure username and password from request body
     const { username, password } = req.body;
