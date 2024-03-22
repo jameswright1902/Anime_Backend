@@ -1,4 +1,15 @@
 -- CreateTable
+CREATE TABLE "Anime" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT,
+    "episodes" INTEGER,
+    "releaseDate" TIMESTAMP(3),
+
+    CONSTRAINT "Anime_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Users" (
     "id" SERIAL NOT NULL,
     "username" TEXT,
@@ -7,7 +18,6 @@ CREATE TABLE "Users" (
     "lastname" TEXT,
     "email" TEXT,
     "admin" BOOLEAN NOT NULL DEFAULT false,
-    "token" TEXT,
 
     CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
 );

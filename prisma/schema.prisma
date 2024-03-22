@@ -10,12 +10,17 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://jwright1902@localhost:3000/Anime?schema=public"
+  url      = env("DATABASE_URL")
 }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = "postgresql://jwright1902@localhost:3000/Anime?schema=public"
+// }
 
 // Define your Anime model
 model Anime {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
   description String?
   episodes    Int?
@@ -24,16 +29,16 @@ model Anime {
 
 // Users
 model Users {
-  id  Int     @id       @default(autoincrement())
-  username    String?   @unique
-  password    String?
-  firstname   String?
-  lastname    String?
-  email       String?
-  admin       Boolean   @default(false)
-  tokens      String?
-  
+  id        Int     @id @default(autoincrement())
+  username  String? @unique
+  password  String?
+  firstname String?
+  lastname  String?
+  email     String?
+  admin     Boolean @default(false)
+ 
 }
+
 // model Genre {
 //   id    Int     @id @default(autoincrement())
 //  name String  @unique
